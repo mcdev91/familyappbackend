@@ -32,7 +32,7 @@ app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcry
 app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db) })
 
 //getting tasks list start
-app.get("/", (req, res) => {
+app.get("/profile/:id", (req, res) => {
     db.select("*").from("task").then(data => {
         res.render("index", { todos: data });
         console.log(data);
