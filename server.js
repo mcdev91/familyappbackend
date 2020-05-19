@@ -31,6 +31,15 @@ app.post('/signin', signin.handleSignIn(db, bcrypt))
 app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt) })
 app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db) })
 
+//getting tasks list start
+app.get("/", (req, res) => {
+    db.select("*").from("task").then(data => {
+        res.render("index", { todos: data });
+        console.log(data);
+    }).catch(err => res.status(400).json(err));
+});
+//getting tasks list end
+
 app.listen(process.env.PORT || 3000, () => {
     console.log(`app is running on port ${process.env.PORT}`);
 })
