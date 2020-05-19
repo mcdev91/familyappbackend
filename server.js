@@ -34,7 +34,7 @@ app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db) }
 //getting tasks list start
 app.get("/profile/:id", (req, res) => {
     db.select("*").from("task").then(data => {
-        res.render("index", { todos: data });
+        res.render("profile", { todos: data });
         console.log(data);
     }).catch(err => res.status(400).json(err));
 });
