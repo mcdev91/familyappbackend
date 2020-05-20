@@ -2,7 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
-const knex = require('knex');
+// const knex = require('knex');
+//for todo
+const Pool = require('pg').Pool;
 
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');
@@ -10,13 +12,24 @@ const profile = require('./controllers/profile');
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
-const db = knex({
-    client: 'pg',
+// const db = knex({
+//     client: 'pg',
+//     connection: {
+//         connectionString: process.env.DATABASE_URL,
+//         ssl: true,
+//     }
+// });
+
+//for todo fix
+const db = new Pool({
+    client: "pg",
     connection: {
         connectionString: process.env.DATABASE_URL,
         ssl: true,
     }
 });
+
+
 
 db.select('*').from('users').then(data => {
 });
@@ -26,7 +39,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 //__________for todo, req.body
-app.use(express.json()); 
+app.use(express.json());
 
 //__________for autentication
 app.get('/', (req, res) => { res.send('It is working') })
