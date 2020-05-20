@@ -57,18 +57,18 @@ app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db) }
 //     }
 // })
 
-// //trying to get todos
+//trying to get todos
 
-// // app.get("/todos", async (req, res) => {
-// //     try {
-// //         const allTodos = d.select('*').from('todo')
-// //             .where('description', '=', description)
-// //             .then(description => {
-// //                 res.json(allTodos.rows);
-// //                 console.log(description);
-// //             })
-// //     } catch (error) {
-// //         console.error(error.message);
+app.get("/profile/:id/todos", async (req, res) => {
+    try {
+        const allTodos = db.select('*').from('todo')
+            .where('description', '=', description)
+            .then(description => {
+                res.json(allTodos.rows);
+                console.log(description);
+            })
+    } catch (error) {
+        console.error(error.message);
 
 // //     }
 // // })
