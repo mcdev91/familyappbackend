@@ -49,13 +49,28 @@ app.post("/todos", async (req, res) => {
 })
 
 //get all todos
+// app.get("/todos", async (req, res) => {
+//     try {
+//         const allTodos = query("SELECT * FROM todo");
+//         res.json(allTodos.rows);
+//     } catch (error) {
+//         console.error(error.message);
+
+//     }
+// })
+
+//get all todos try
+
 app.get("/todos", async (req, res) => {
     try {
-        const allTodos = query("SELECT * FROM todo");
-        res.json(allTodos.rows);
+        db.select('*').from('todo')
+        .where('description', '=', description)
+        .then(allTodos => {
+            res.json(allTodos.rows);
+            console.log(allTodos);
+        })
     } catch (error) {
         console.error(error.message);
-
     }
 })
 
