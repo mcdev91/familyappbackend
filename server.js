@@ -36,17 +36,13 @@ app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db) }
 
 // get all todos
 app.get("/todos", async (req, res) => {
-    const { description } = req.params;
-    db.select('*').from('todo').where({ description })
-        .then(data => {
-            // console.log(user[0]);
-            if (data.length) {
-                res.json(data.rows)
-            } else {
-                res.status(400).json('Not found')
-            }
-        })
-        .catch(err => res.status(400).json('error getting user'))
+    const results = (req, res) => {
+        db.select('*').from('todo')
+            .then(results => {
+                response.status(200).json(results.rows)
+            })
+        console.log(results);
+    }
 });
 
 //   // get a todo
