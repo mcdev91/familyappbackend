@@ -37,7 +37,7 @@ app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db) }
 // get all todos
 app.get("/todos", async (req, res) => {
     const { description } = req.params;
-    db.select('*').from('todos').where({ description })
+    db.select('*').from('todo').where({ description })
         .then(data => {
             // console.log(user[0]);
             if (data.length) {
