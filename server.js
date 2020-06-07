@@ -8,8 +8,6 @@ const register = require('./controllers/register');
 const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 
-const todos = require('./controllers/todos');
-
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
 const db = knex({
@@ -34,7 +32,79 @@ app.post('/signin', signin.handleSignIn(db, bcrypt))
 app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt) })
 app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db) })
 
-app.get('/todos', (req, res) => { todos.getTodos(req, res, db) });
+// ROUTES
+
+// get all todos
+app.get("/todos", async (req, res) => {
+    const { description } = req.params;
+    db.select('*').from('todos').where({ description })
+        .then(data => {
+            // console.log(user[0]);
+            if (data.length) {
+                res.json(data.rows)
+            } else {
+                res.status(400).json('Not found')
+            }
+        })
+        .catch(err => res.status(400).json('error getting user'))
+});
+
+//   // get a todo
+//   app.get("/todos/:id", async (req, res) => {
+//     try {
+//       const { id } = req.params;
+//       const todo = await pool.query("SELECT * FROM todo WHERE todo_id = $1", [
+//         id,
+//       ]);
+//       res.status(200).json(todo.rows[0]);
+//     } catch (err) {
+//       console.error(err.message);
+//     }
+//   });
+
+//   // create a todo
+//   app.post("/todos", async (req, res) => {
+//     try {
+//       const { description } = req.body;
+//       const newTodo = await pool.query(
+//         "INSERT INTO todo (description) VALUES($1) RETURNING *",
+//         [description]
+//       );
+
+//       res.status(200).json(newTodo.rows[0]);
+//     } catch (err) {
+//       console.error(err.message);
+//     }
+//   });
+
+//   // update a todo
+//   app.put("/todos/:id", async (req, res) => {
+//     try {
+//       const { id } = req.params;
+//       const { description } = req.body;
+//       await pool.query(
+//         "UPDATE todo SET description = $1 WHERE todo_id = $2",
+//         [description, id]
+//       );
+
+//       res.status(200).json("todo was updated");
+//     } catch (err) {
+//       console.error(err.message);
+//     }
+//   });
+
+//   // delete a todo
+//   app.delete("/todos/:id", async (req, res) => {
+//     try {
+//       const { id } = req.params;
+//       await pool.query("DELETE FROM todo WHERE todo_id = $1", [
+//         id,
+//       ]);
+//       res.status(200).json("todo was deleted");
+//     } catch (err) {
+//       console.error(err.message);
+//     }
+//   });
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`app is running on port ${process.env.PORT}`);
