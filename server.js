@@ -36,13 +36,10 @@ app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db) }
 
 // get all todos
 app.get("/todos", async (req, res) => {
-    const results = (req, res) => {
-        db.select('*').from('todo')
-            .then(results => {
-                response.status(200).json(results.rows)
-            })
-        console.log(results);
-    }
+    db.select('*').from('todo').then(todos => {
+        console.log(todos);
+        res.json(todos);
+    })
 });
 
 //   // get a todo
