@@ -42,19 +42,26 @@ app.get("/todos", async (req, res) => {
     })
 });
 
-//   // get a todo
-//   app.get("/todos/:id", async (req, res) => {
-//     try {
-//       const { id } = req.params;
-//       const todo = await pool.query("SELECT * FROM todo WHERE todo_id = $1", [
-//         id,
-//       ]);
-//       res.status(200).json(todo.rows[0]);
-//     } catch (err) {
-//       console.error(err.message);
-//     }
-//   });
-
+app.post('/post', async (req, res) => {
+    db.transaction(trx => {
+        trx.insert({
+            description: description,
+        })
+            .into('todo')
+            .then(data => {
+                return trx('todo')
+                    .returning('*')
+                    .insert({
+                        description: description,
+                    })
+                    .then(todo => {
+                        res.json(data);
+                    })
+            })
+    })
+        .catch(err => res.status(400).json('unable to register'))
+}
+)
 //   // create a todo
 //   app.post("/todos", async (req, res) => {
 //     try {
