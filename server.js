@@ -42,7 +42,7 @@ app.get("/todos", async (req, res) => {
     })
 });
 
-app.post('/post', async (req, res) => {
+app.post('/todos', async (req, res) => {
     db.transaction(trx => {
         trx.insert({
             description: description,
