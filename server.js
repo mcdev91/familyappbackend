@@ -7,6 +7,7 @@ const knex = require('knex');
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
+const allTodos = require('./controllers/allTodos');
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
@@ -31,16 +32,15 @@ app.get('/', (req, res) => { res.send('It is working') })
 app.post('/signin', signin.handleSignIn(db, bcrypt))
 app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt) })
 app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db) })
+//__________for todos
+app.get('/todos', (req, res) => { allTodos.handleGetAllTodos(req, res, db) })
 
-// ROUTES
-
-// get all todos
-app.get("/todos", async (req, res) => {
-    db.select('*').from('todo').then(todos => {
-        console.log(todos);
-        res.json(todos);
-    })
-});
+// app.get("/todos", async (req, res) => {
+//     db.select('*').from('todo').then(todos => {
+//         console.log(todos);
+//         res.json(todos);
+//     })
+// });
 
 // app.post('/todos', async (req, res) => {
 //     db.transaction(trx => {
