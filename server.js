@@ -42,40 +42,40 @@ app.get("/todos", async (req, res) => {
     })
 });
 
-app.post('/todos', async (req, res) => {
-    db.transaction(trx => {
-        trx.insert({
-            description: description,
-        })
-            .into('todo')
-            .then(data => {
-                return trx('todo')
-                    .returning('*')
-                    .insert({
-                        description: description,
-                    })
-                    .then(todo => {
-                        res.json(data);
-                    })
-            })
-    })
-        .catch(err => res.status(400).json('unable to register'))
-}
-)
-//   // create a todo
-//   app.post("/todos", async (req, res) => {
-//     try {
-//       const { description } = req.body;
-//       const newTodo = await pool.query(
-//         "INSERT INTO todo (description) VALUES($1) RETURNING *",
-//         [description]
-//       );
+// app.post('/todos', async (req, res) => {
+//     db.transaction(trx => {
+//         trx.insert({
+//             description: description,
+//         })
+//             .into('todo')
+//             .then(data => {
+//                 return trx('todo')
+//                     .returning('*')
+//                     .insert({
+//                         description: description,
+//                     })
+//                     .then(todo => {
+//                         res.json(data);
+//                     })
+//             })
+//     })
+//         .catch(err => res.status(400).json('unable to add'))
+// }
+// )
+  // create a todo
+  app.post("/todos", async (req, res) => {
+    try {
+      const { description } = req.body;
+      const newTodo = await pool.query(
+        "INSERT INTO todo (description) VALUES($1) RETURNING *",
+        [description]
+      );
 
-//       res.status(200).json(newTodo.rows[0]);
-//     } catch (err) {
-//       console.error(err.message);
-//     }
-//   });
+      res.status(200).json(newTodo.rows[0]);
+    } catch (err) {
+      console.error(err.message);
+    }
+  });
 
 //   // update a todo
 //   app.put("/todos/:id", async (req, res) => {
